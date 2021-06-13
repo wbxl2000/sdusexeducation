@@ -32,34 +32,20 @@
   function check() {
     let xh = document.getElementById('xuehao');
     let xm = document.getElementById('name');
-    $.ajax({
-      type: "GET",
-      url: "http://seat.lib.sdu.edu.cn/api.php/users/" + xh.value,
-      headers: {
-        Accept: "application/json; charset=utf-8",
-        Host: "seat.lib.sdu.edu.cn",
-        Referer: "http://seat.lib.sdu.edu.cn/home/web/space/id/19/day/2021-06-14/floor/0"
-      },
-      success: function (result) {
-        if (result.data.list.name === xm.value) {
-          alert('認證成功');
-          draw(xh.value, xm.value);
-        } else {
-          alert('認證失敗');
-        }
-      },
-      error: function (result) {
+    $.post('http://localhost:2333', {
+      id: xh.value, 
+      name: xm.value
+    } , result => {
+      if (!result) {
         alert('認證失敗');
       }
-    })
-    // $.get('http://seat.lib.sdu.edu.cn/api.php/users/' + xh.value, result => {
-    //   if (result.data.list.name === xm.value) {
-    //     alert('認證成功');
-    //     draw(xh.value, xm.value);
-    //   } else {
-    //     alert('認證失敗');
-    //   }
-    // });
+      if (result.check) {
+        alert('認證成功');
+        draw(xh.value, xm.value);
+      } else {
+        alert('認證失敗');
+      }
+    });
   }
 
   function draw(xh, xm) {
@@ -89,4 +75,26 @@
       }
     }
   }
+
+    // $.ajax({
+    //   type: "GET",
+    //   url: "http://seat.lib.sdu.edu.cn/api.php/users/" + xh.value,
+    //   headers: {
+    //     Accept: "application/json; charset=utf-8",
+    //     Host: "seat.lib.sdu.edu.cn",
+    //     Referer: "http://seat.lib.sdu.edu.cn/home/web/space/id/19/day/2021-06-14/floor/0"
+    //   },
+    //   success: function (result) {
+    //     if (result.data.list.name === xm.value) {
+    //       alert('認證成功');
+    //       draw(xh.value, xm.value);
+    //     } else {
+    //       alert('認證失敗');
+    //     }
+    //   },
+    //   error: function (result) {
+    //     alert('認證失敗');
+    //   }
+    // });
+
 </script>
