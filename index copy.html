@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script> 
+</head>
+
+<body>
+  <!-- <img src='./1.png'> -->
+  學號 <input id="xuehao" value=''>
+  姓名：<input id="name"> 
+  <button type="button" onclick=check()> 提交</button>
+  <br>
+  <canvas id="canvas"> </canvas>
+</body>
+
+</html>
+
+<style>
+  #canvas {
+    /* width: 1000px; */
+    /* height: 1000px;  */
+    border: 1px solid red;
+  }
+</style>
+
+<script>
+  function check() {
+    let xh = document.getElementById('xuehao');
+    let xm = document.getElementById('name');
+    $.get('http://seat.lib.sdu.edu.cn/api.php/users/'+xh.value, result => {
+      if (result.data.list.name === xm.value) {
+        alert('認證成功');
+        draw(xh.value, xm.value);
+      } else {
+        alert('認證失敗');
+      }
+    })
+  }
+
+  function draw(xh, xm) {
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    let img = new Image();
+    img.src = './0.png';
+    // img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
+
+    img.onload = function x() {
+      // ctx.drawImage(img, 0, 0); 
+      canvas.width = img.naturalWidth;  
+      canvas.height = img.naturalHeight;  
+      ctx.drawImage(img, 0, 0, img.width, img.height);
+      shuiyin();
+    };
+    
+    function shuiyin() {
+      for (let j = -3; j <= 5; j++) {
+        for (let i = 0; i < 200; i++) {
+          ctx.rotate((-45 * Math.PI) / 180); // 水印初始偏转角度
+          ctx.font = "20px microsoft yahei";
+          ctx.fillStyle = "rgba(0,0,0,0.2)";
+          ctx.fillText(xh + ' ' + xm, j * 300, i * 100);
+          ctx.rotate((45 * Math.PI) / 180); // 把水印偏转角度调整为原来的，不然他会一直转
+        }
+      }
+    }
+  }
+</script>
