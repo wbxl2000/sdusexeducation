@@ -11,7 +11,7 @@
 
 <body>
   <!-- <img src='./1.png'> -->
-  學號 <input id="xuehao" value='201805130163'>
+  學號 <input id="xuehao" value=''>
   姓名：<input id="name">
   <button type="button" onclick=check()> 提交</button>
   <br>
@@ -32,7 +32,7 @@
   function check() {
     let xh = document.getElementById('xuehao');
     let xm = document.getElementById('name');
-    $.post('http://localhost:2333', {
+    $.post('http://1.15.137.67:2333', {
       id: xh.value, 
       name: xm.value
     } , result => {
@@ -53,10 +53,8 @@
     let ctx = canvas.getContext("2d");
     let img = new Image();
     img.src = './0.png';
-    // img.src = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
 
     img.onload = function x() {
-      // ctx.drawImage(img, 0, 0); 
       canvas.width = img.naturalWidth;
       canvas.height = img.naturalHeight;
       ctx.drawImage(img, 0, 0, img.width, img.height);
@@ -75,26 +73,5 @@
       }
     }
   }
-
-    // $.ajax({
-    //   type: "GET",
-    //   url: "http://seat.lib.sdu.edu.cn/api.php/users/" + xh.value,
-    //   headers: {
-    //     Accept: "application/json; charset=utf-8",
-    //     Host: "seat.lib.sdu.edu.cn",
-    //     Referer: "http://seat.lib.sdu.edu.cn/home/web/space/id/19/day/2021-06-14/floor/0"
-    //   },
-    //   success: function (result) {
-    //     if (result.data.list.name === xm.value) {
-    //       alert('認證成功');
-    //       draw(xh.value, xm.value);
-    //     } else {
-    //       alert('認證失敗');
-    //     }
-    //   },
-    //   error: function (result) {
-    //     alert('認證失敗');
-    //   }
-    // });
 
 </script>
