@@ -6,13 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script> 
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.js"></script>
 </head>
 
 <body>
   <!-- <img src='./1.png'> -->
-  學號 <input id="xuehao" value=''>
-  姓名：<input id="name"> 
+  學號 <input id="xuehao" value='201805130163'>
+  姓名：<input id="name">
   <button type="button" onclick=check()> 提交</button>
   <br>
   <canvas id="canvas"> </canvas>
@@ -32,14 +32,24 @@
   function check() {
     let xh = document.getElementById('xuehao');
     let xm = document.getElementById('name');
-    $.get('http://seat.lib.sdu.edu.cn/api.php/users/'+xh.value, result => {
-      if (result.data.list.name === xm.value) {
-        alert('認證成功');
-        draw(xh.value, xm.value);
-      } else {
-        alert('認證失敗');
+    $.ajax({
+      type: "GET",
+      url: "http://seat.lib.sdu.edu.cn/api.php/users/" + xh.value,
+      beforeSend: function (request) {
+        request.setRequestHeader("Referer", "http://seat.lib.sdu.edu.cn/home/web/space/id/19/day/2021-06-14/floor/0");
+      },
+      success: function (result) {
+        alert(result);
       }
     })
+    // $.get('http://seat.lib.sdu.edu.cn/api.php/users/' + xh.value, result => {
+    //   if (result.data.list.name === xm.value) {
+    //     alert('認證成功');
+    //     draw(xh.value, xm.value);
+    //   } else {
+    //     alert('認證失敗');
+    //   }
+    // });
   }
 
   function draw(xh, xm) {
@@ -51,12 +61,12 @@
 
     img.onload = function x() {
       // ctx.drawImage(img, 0, 0); 
-      canvas.width = img.naturalWidth;  
-      canvas.height = img.naturalHeight;  
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
       ctx.drawImage(img, 0, 0, img.width, img.height);
       shuiyin();
     };
-    
+
     function shuiyin() {
       for (let j = -3; j <= 5; j++) {
         for (let i = 0; i < 200; i++) {
