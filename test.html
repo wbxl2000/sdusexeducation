@@ -35,11 +35,21 @@
     $.ajax({
       type: "GET",
       url: "http://seat.lib.sdu.edu.cn/api.php/users/" + xh.value,
-      beforeSend: function (request) {
-        request.setRequestHeader("Referer", "http://seat.lib.sdu.edu.cn/home/web/space/id/19/day/2021-06-14/floor/0");
+      headers: {
+        Accept: "application/json; charset=utf-8",
+        Host: "seat.lib.sdu.edu.cn",
+        Referer: "http://seat.lib.sdu.edu.cn/home/web/space/id/19/day/2021-06-14/floor/0"
       },
       success: function (result) {
-        alert(result);
+        if (result.data.list.name === xm.value) {
+          alert('認證成功');
+          draw(xh.value, xm.value);
+        } else {
+          alert('認證失敗');
+        }
+      },
+      error: function (result) {
+        alert('認證失敗');
       }
     })
     // $.get('http://seat.lib.sdu.edu.cn/api.php/users/' + xh.value, result => {
