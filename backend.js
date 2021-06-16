@@ -1,23 +1,17 @@
 const express = require('express');
 const app = express();
-const cors = require('cors');
-app.use(cors());
+// const cors = require('cors');
+// app.use(cors());
+app.all('*', (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+  res.header("X-Powered-By",' 3.2.1')
+  res.header("Content-Type", "application/json;charset=utf-8");
+  next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.all("*",function(req,res,next){
-  res.setHeader('Access-Control-Allow-Credentials', true)
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  )
-  if (req.method.toLowerCase() == 'options')
-    res.send(200).end();  //让options尝试请求快速结束
-  else
-    next();
-});
 
 const request = require('request');
 let options = {
@@ -29,6 +23,7 @@ let options = {
 };
 
 app.post('/', (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   console.log(req.body.id);
   options.url = 'http://seat.lib.sdu.edu.cn/api.php/users/' + req.body.id;
   (async () => {
