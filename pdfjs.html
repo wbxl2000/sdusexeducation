@@ -15,7 +15,8 @@
 
   <h2 id="banben">当文档有更新时，会在此处发布~ 目前版本是 v1.0 </h2> <span>下方文档若空白则在加载中</span>
   <button onclick="hide()">隐藏版本信息</button>
-  <iframe src="/web/viewer.html?file=/镜子-刘慈欣.pdf" width="100%" height="100%"></iframe>
+  <embed type="application/pdf" src="v1.0 非官方_ 2021年世一大性图鉴分析报告_watermark.pdf#toolbar=0" width="100%"
+    height="100%"></embed>
 
   <!-- <a href="" class="node done"> 问卷数据脱敏 √ </a> <br>
   <a href="" class="node done"> 数据格式处理 √ </a> <br>
@@ -30,40 +31,39 @@
 </html>
 
 <script type="text/javascript">
-  var hiderFlag = 'block';
-  document.getElementById("banben").style.display = hiderFlag;
-  function hide() {
-    (hiderFlag === 'block') ? (hiderFlag = 'none') : (hiderFlag = 'block');
-    console.log(hiderFlag);
-    document.getElementById("banben").style.display = hiderFlag;
-  }
+  var url = './v1.0 非官方_ 2021年世一大性图鉴分析报告_watermark.pdf';
+  PDFJS.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+
+  var loadingTask = PDFJS.getDocument(url);
+  loadingTask.promise.then(function (pdf) {
+    console.log('PDF loaded');
+
+    var pageNumber = 1;
+    pdf.getPage(pageNumber).then(function (page) {
+      console.log('Page loaded');
+
+      var scale = 1.5;
+      var viewport = page.getViewport(scale);
+
+      var canvas = document.getElementById('the-canvas');
+      var context = canvas.getContext('2d');
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      var renderContext = {
+        canvasContext: context,
+        viewport: viewport
+      };
+      var renderTask = page.render(renderContext);
+      renderTask.then(function () {
+        console.log('Page rendered');
+      });
+    });
+  }, function (reason) {
+    console.error(reason);
+  });
 </script>
 
 <style>
-  body {
-    height: 1080px;
-    padding: 0;
-    margin: 0;
 
-  }
-
-  a {
-    font-size: 28px;
-  }
-
-  .node {
-    text-decoration: none;
-  }
-
-  .done {
-    color: green;
-  }
-
-  .ing {
-    color: blue;
-  }
-
-  .future {
-    color: gray;
-  }
 </style>
